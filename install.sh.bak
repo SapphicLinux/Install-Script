@@ -1,0 +1,42 @@
+#!/bin/bash
+
+lsblk_output=$(lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,FSTYPE,LABEL -n -l)
+
+declare -A parents
+
+while read -r name size type mountpoint fstype label; do
+    indentation=""
+    
+    case $type in
+        "disk")
+            indentation=""
+            echo -n "$indentation$name ($size, $type)"
+            ;;
+        "part")
+            parent=${parents[$name]}
+            indentation="  "
+            echo -n "$indentation$parent/$name ($size, $type, $fstype, $label)"
+            ;;
+        "crypt")
+            parent=${parents[$name]}
+            indentation="    "
+            echo -n "$indentation$parent/$name ($size, $type, $fstype, $label)"
+            ;;
+        "lvm")
+            indentation=""
+            echo -n "$indentation$name ($size, $type)"
+            ;;
+        "lvm2_member")
+            parent=${parents[$name]}
+            indentation="  "
+            echo -n "$indentation$parent/$name ($size, $type)"
+            ;;
+    esac
+
+    blkid_output=$(blkid -o value -s UUID /dev/"$name" 2>/dev/null | tr '\n' ' ')
+    [[ -n $blkid_output ]] && echo " $blkid_output"
+
+    if [[ $type != "lvm" && $type != "lvm2_member" ]]; then
+        parents[$name]=$name
+    fi
+done <<< "$lsblk_output"
