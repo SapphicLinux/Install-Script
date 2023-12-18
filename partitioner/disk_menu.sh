@@ -18,14 +18,19 @@ print_device_info() {
     let treelvl=$indentlen/2
     #print
     #printf "$indent%-${namecol}s | %-10s | %-15s | %-20s | %-10s \n" "$name" "$type" "$label" "$format" "$size"
-    printf "%-10s | %-15s | %-20s | %-10s \n" "$type" "$label" "$format" "$size"
-    #echo "$type $label $format $size"
+    #printf "$indent%-${namecol}s | %-10s | %-15s | %-20s | %-10s \n" "name" "$type" "$label" "$format" "$size"
+    if [ "$type" == "disk" ];then
+        echo "---------------"
+    else
+        echo "$type $label $format $size"
+    fi
 
 }
 
 # Get a list of unmounted block devices
 #devices=($(lsblk -rno NAME,PATH,MOUNTPOINT | awk '{print $2}')) #all block devices
 devices=($(lsblk -rno NAME,PATH,MOUNTPOINT | awk '$3 == "" {print $2}')) #unmounted block devices
+#devices=($(lsblk -rno NAME,PATH,TYPE | awk '$3 == "disk" {print $2}')) #disks only
 
 printf "\e[4;1m%-30s | %-10s | %-15s | %-20s | %-10s \e[0m\n" "Device" "Type" "Label" "Format" "Size" #print header
 
