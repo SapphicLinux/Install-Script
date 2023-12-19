@@ -1,0 +1,62 @@
+#!/bin/bash
+
+device_list=()
+print_device_info() {
+    local device=$1
+
+    # Get device info
+    local name=$(lsblk --nodeps -rno NAME $device)
+    local indent=$(lsblk -Mno NAME | grep "$name$" | sed s/$name//)
+#    local indentname="$indent$name"
+    local indent=$(printf "%-${#indent}s" "")
+#    devce_list+=("$(printf \"%-${#indent}s\")")
+    device_list+=("$indent$device")
+    local type=$(lsblk --nodeps -rno TYPE $device)
+    local label=$(lsblk --nodeps -rno LABEL $device)
+    local format=$(lsblk --nodeps -rno FSTYPE $device)
+    local size=$(lsblk --nodeps -rno SIZE $device)
+
+    #format
+    indentlen=${#indent}
+    let namecol=30-$indentlen
+    let treelvl=$indentlen/2
+    #print
+    #printf "$indent%-${namecol}s | %-10s | %-15s | %-20s | %-10s \n" "$name" "$type" "$label" "$format" "$size"
+    local devinfo=$(printf "%-10s | %-15s | %-20s | %-10s \n" "$type" "$label" "$format" "$size")
+    device_list+=("$devinfo")
+
+}
+
+# Get a list of unmounted block devices
+#devices=($(lsblk -rno NAME,PATH,MOUNTPOINT | awk '{print $2}')) #all block devices
+devices=($(lsblk --sort=name -Mrno PATH,MOUNTPOINT | awk '$2 == "" {print $1}')) #unmounted block devices
+#devices=($(lsblk -rno NAME,PATH,TYPE | awk '$3 == "disk" {print $2}')) #disks only
+
+#printf "\e[4;1m%-30s | %-10s | %-15s | %-20s | %-10s \e[0m\n" "Device" "Type" "Label" "Format" "Size" #print header
+
+#DeviceList=()
+# Iterate over unmounted devices
+for device in "${devices[@]}"; do
+#    DeviceList+=($device)
+#    device_list+=("$(print_device_info $device)")
+    print_device_info $device
+#    partitions=($(lsblk -rno NAME,PATH,TYPE | awk '$3 != "disk" {print $2}')) #not disks only
+#    DeviceList+=(" ")
+#    DeviceList+=(" ")
+    echo "haha"
+done
+
+
+
+#echo "${DeviceList[@]}"
+
+#device_list=()
+
+#lsblk_list=("$(lsblk)")
+#for blk in "${lsblk_list[@]}"; do
+#  device_list+=("$blk")
+#  echo "$blk"
+#  device_list+=("$blk")
+#done
+
+dialog --menu "Partitioner_menu" -1 -1 0 "${device_list[@]}"
