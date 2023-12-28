@@ -30,8 +30,8 @@ readarray -t <<<$VALUES
 usermod -aG sudo ${MAPFILE[1]}
 echo "Created user \"${MAPFILE[0]}\" with username \"${MAPFILE[1]}\" "
 userhome="/home/${MAPFILE[1]}"
-sapconf="${userhome}/.config/sapphic-linux"
-#mkdir -p ${sapconf}/sync/
+userconf="${userhome}/.config/sapphic-linux"
+#mkdir -p ${userconf}/sync/
 #echo "${MAPFILE[2]}" > ${sapconf}/sync/repo
 #echo "${MAPFILE[3]}" > ${sapconf}/sync/profiles
 echo "Saved user sync settings"

@@ -15,11 +15,9 @@ INPUT=/tmp/menu.sh.$$
 trap "rm $INPUT; exit" SIGHUP SIGINT SIGTERM
 
 dialog --clear --backtitle "Linux Shell Script Tutorial" \
---title "[ M A I N - M E N U ]" \
---menu "Use the UP/DOWN arrow keys, the first \n\
-letter of the choice as a hot key, or the \n\
-number keys 1-9 to choose an option.\n\
-Choose the TASK" 15 75 4 \
+--title "[ SELECT DEPLOYMENT TYPE ]" \
+--menu "Use the UP/DOWN arrow keys, the first letter of the choice\n\
+as a hot key, or the number keys 1-9 to choose an option." 15 75 4 \
 user "Single-User Device with Desktop Environment" \
 common "Multi-User Device with Desktop Environment" \
 kiosk "Single-Profile Public Device with Desktop Environment" \

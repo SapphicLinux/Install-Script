@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#./distribution.sh
+./distribution.sh
 
 #./newuser.sh
 
