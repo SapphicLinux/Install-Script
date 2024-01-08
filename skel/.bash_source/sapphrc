@@ -1,0 +1,8 @@
+#!/bin/bash
+
+toilet -f small -F border $(hostname | cut -d'-' -f3-) --gay
+hyfetch
+
+source ~/.bash_source/${device_type}.sh
+source ~/.bash_source/custom.sh
+

@@ -1,14 +1,18 @@
 #!/bin/bash
 
-./distribution.sh
+script_root=$(dirname $0)
 
-#./newuser.sh
+${script_root}/distribution.sh
+
+${script_root}/newuser.sh
+
+${script_root}/shell.sh
 
 dist=$(cat /root/.config/sapphic-linux/distribution)
 #dist=$(cat ./distribution)
 
-./dists/${dist}.sh
+${script_root}/dists/${dist}.sh
 
-./hostname.sh
+${script_root}/hostname.sh
 
-#./done.sh
+${script_root}/done.sh

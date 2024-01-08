@@ -5,6 +5,9 @@
 
 #com.brave.Browser
 
+apt install -y kde-standard sddm flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
 cmd=(dialog --separate-output --checklist "Select options:" 22 76 16)
 options=(
 #Browsers
